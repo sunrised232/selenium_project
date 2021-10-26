@@ -64,7 +64,7 @@ driver.quit()
 list_data = func.read_file('conf/conf_vbc_oper_bg.txt')
 
 '''
-vbc_Oper
+#vbc_Oper
 '''
 
 url = "https://test.vbc.loc/resources/secured/app/entry/login/oper-or-partner"
@@ -131,7 +131,7 @@ driver.quit()
 list_data = func.read_file('conf/conf_vbc_client_bg.txt')
 
 '''
-vbc_client_2
+#vbc_client_2
 '''
 url = "https://test.vbc.loc/resources/secured/app/entry/login/client"
 options = webdriver.ChromeOptions()
@@ -158,31 +158,17 @@ if func.check_exists_by_xpath(driver, xpath_give) is True:
 func.do_click(driver, "(//div[@class = 'cl-nav-menu-link'])[3]")
 
 func.do_click(driver, "//span[@class='pr-2']")
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
-#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ#НИХУЯ НЕ РАБОТАЕТ ЗДЕСЬ
 
+func.do_click(driver, "//td[contains(text(),'" + number_order + "')]")
 
-
-
-
-time.sleep(2)
-element = func.find_element(driver, "//td[contains(text(),'" + number_order + "')]")
-actions = ActionChains(driver)
-actions.double_click(element).perform()
+time.sleep(1)
+func.do_click(driver, "//span[contains(text(),'Перейти в заявку')]")
 
 xpath_give = "//button[@theme = 'success']"
 if func.check_exists_by_xpath(driver, xpath_give) is True:
     func.do_click(driver, xpath_give)
+
+
 
 func.do_click(driver, "(//button[@class = 'btn btn-success-700'])[2]") # Подписать и отправить
 
@@ -201,12 +187,15 @@ driver.close()
 driver.quit()
 
 '''
-vbc_bank_1
+#vbc_bank_1
 '''
+
+
 list_data = func.read_file('conf/conf_vbc_bank_bg.txt')
 
 url = "https://test.vbc.loc/resources/secured/app/entry/login/oper-or-partner"
 options = webdriver.ChromeOptions()
+options.add_extension("extension_1_2_8_0.crx")
 options.add_argument('--ignore-ssl-errors=yes')
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('window-size=1920,1080')
@@ -222,37 +211,171 @@ func.do_send(driver, "//input[@id = 'password-input']", list_data[1])  # Вво�
 
 func.do_click(driver, "//button[@id = 'email_sign-in-button']")  # Войти
 
+xpath_give = "//button[@class = 'btn-close modal-btn btn-round']" # Закрыть всплывающее окно
+if func.check_exists_by_xpath(driver, xpath_give) is True:
+    func.do_click(driver, xpath_give)
+
 func.do_click(driver, "(//div[@class='pr-nav-menu-link'])[2]")  # Пункт бг
 
 func.do_click(driver, "// span[contains(text(), 'Заявки')]")  # Перейти в заявки
 
 time.sleep(2)
-element = func.find_element(driver, "//td[contains(text(),'" + number_order + "')]")
+element = func.find_element(driver, "//div[contains(text(),'" + number_order + "')]")#Открыть заявку по номеру
 actions = ActionChains(driver)
 actions.double_click(element).perform()
 
+func.do_click(driver, "//button[contains(text(),'В')]")  # Взять на рассмотрение
+
+func.do_click(driver, "//button[contains(text(),'Да')]") #Да
+
+func.do_click(driver, "//button[contains(text(),'ЭКК')]") #Отправить на ЭКК
+
+func.do_click(driver, "//button[contains(text(),'Да')]") #Да
+
 time.sleep(1)
-func.do_click(driver, "//button[@class = 'btn btn-lg btn-primary']")  # Взять на рассмотрение
+func.do_send(driver, "//input[contains(@formcontrolname,'co')]", '1')  # Ввод комиссии
 
-func.do_click(driver, "//button[@theme= 'success']")  # Да
+func.do_click(driver, "(//input[@type='text'])[3]") #Выбрать подписанта
 
-func.do_click(driver, "//button[contains(@class, 'btn btn-lg btn-pr')]")  # Отправить на ЭКХ
+func.do_click(driver, "//div[contains(@class, 'ng-o')]") #Выбрать подписанта из списка
 
-func.do_click(driver, "//button[@theme= 'success']")  # Да
+func.do_click(driver, "//button[contains(text(),'Сфор')]") #Сформировать предложение
 
-func.do_send(driver, "//input[@formcontrolname='commission']", list_data[2])  # Ввод комиссии
+func.do_click(driver, "//button[contains(text(),'Да')]") #Да
 
-func.do_click(driver, "(//input[@aria-autocomplete='list'])[3]")  # Лист
+func.do_click(driver, "//button[contains(text(),' Подписать и')]") #Да
 
-func.do_click(driver, "//span[contains(@class,'ng-option-label ng-star-inserted')]")  # Выбор первого подписанта
+func.do_click(driver, "//div[@class = 'ng-select-container']") # подписи в наличии
 
-func.do_click(driver, "(//button[@class = 'btn btn-lg btn-primary'])[2]")  # Сформировать предложение
+func.do_click(driver, "//div[@role='option']")# Выбрать подпись
 
-func.do_click(driver, "//button[@theme= 'success']")  # Да
-
-func.do_click(driver, "(//button[@class = 'btn btn-lg btn-primary'])[2]")  # Сформировать предложение
+time.sleep(5)
 
 print('Confirm!')
 
 driver.close()
 driver.quit()
+'''
+
+#vbc_client_3
+'''
+list_data = func.read_file('conf/conf_vbc_client_bg.txt')
+
+url = "https://test.vbc.loc/resources/secured/app/entry/login/client"
+options = webdriver.ChromeOptions()
+options.add_extension("extension_1_2_8_0.crx")
+options.add_argument('--ignore-ssl-errors=yes')
+options.add_argument('--ignore-certificate-errors')
+options.add_argument('window-size=1920,1080')
+driver = webdriver.Chrome(executable_path="chromedriver.exe",options=options)
+
+driver.get(url=url)
+
+func.do_click(driver, "//button[@id = 'email-tab']")#Переключится на вход по email
+
+func.do_send(driver, "//input[@id = 'email-input']",list_data[0])#Ввод логина
+
+func.do_send(driver, "//input[@id = 'password-input']",list_data[1])#Ввод пароля
+
+func.do_click(driver, "//button[@id = 'email_sign-in-button']")#Войти
+
+xpath_give = "//button[@class = 'btn-close modal-btn btn-round']" # Закрыть всплывающее окно
+if func.check_exists_by_xpath(driver, xpath_give) is True:
+    func.do_click(driver, xpath_give)
+
+func.do_click(driver, "(//div[@class = 'cl-nav-menu-link'])[3]")#Продукты по бизнесу
+
+func.do_click(driver, "//span[@class='pr-2']")#Бг
+
+func.do_click(driver, "//div[contains(text(),'Е')]")#Есть предложение
+
+xpath_give = "//vbc-offer-preview[@prefix='BG']" # Закрыть всплывающее окно
+if func.check_exists_by_xpath(driver, xpath_give) is True:
+    func.do_click(driver, "//td[@class = 'text-center']")
+
+func.do_click(driver, "//td[contains(text(),'" + number_order + "')]")#Открыть окно заявки
+
+func.do_click(driver, "//span[contains(text(),'Пере')]") # перейти в заявку
+
+func.do_click(driver, "//tr/td[contains(text(),' Откры')]") # перейти в гпб
+
+func.do_click(driver, "//button[contains(text(),'При')]") # принять в гпб
+
+func.do_click(driver, "//button[contains(text(),'Само')]")
+
+func.do_click(driver, "//label")
+
+func.do_click(driver, "//button[contains(text(),'и п')]")
+
+func.do_click(driver, "(//div[@class='ng-select-container'])[2]")
+
+func.do_click(driver, "//div[@role='option']")
+
+func.do_click(driver, "//button[@class='close']")
+
+
+time.sleep(5)
+driver.close()
+driver.quit()
+
+'''
+#vbc_bank_2
+'''
+
+
+list_data = func.read_file('conf/conf_vbc_bank_bg.txt')
+
+url = "https://test.vbc.loc/resources/secured/app/entry/login/oper-or-partner"
+options = webdriver.ChromeOptions()
+options.add_extension("extension_1_2_8_0.crx")
+options.add_argument('--ignore-ssl-errors=yes')
+options.add_argument('--ignore-certificate-errors')
+options.add_argument('window-size=1920,1080')
+driver = webdriver.Chrome(executable_path="chromedriver.exe",options=options)
+
+driver.get(url=url)
+
+func.do_click(driver, "//button[@id = 'email-tab']")#Переключится на вход по email
+
+func.do_send(driver, "//input[@id = 'email-input']",list_data[0])#Ввод логина
+
+func.do_send(driver, "//input[@id = 'password-input']",list_data[1])#Ввод пароля
+
+func.do_click(driver, "//button[@id = 'email_sign-in-button']")#Войти
+
+xpath_give = "//button[@class = 'btn-close modal-btn btn-round']" # Закрыть всплывающее окно
+if func.check_exists_by_xpath(driver, xpath_give) is True:
+    func.do_click(driver, xpath_give)
+
+func.do_click(driver, "(//div[@class = 'pr-nav-menu-link'])[2]")#Продукты по бизнесу
+
+func.do_click(driver, "//span[contains(text(),'Зая')]")#Бг
+
+func.do_click(driver, "//label[contains(text(),'е з')]")#Есть предложение
+
+time.sleep(2)
+element = func.find_element(driver, "//div[contains(text(),'" + number_order + "')]")#Поиск закупки по номеру
+actions = ActionChains(driver)
+actions.double_click(element).perform()
+
+func.do_send(driver, "//input[@formcontrolname='orderId']",number_order)#Ввод номера заявки
+
+func.do_send(driver, "//input[@formcontrolname='amount']",'1')#Ввод суммы платежа
+
+func.do_click(driver, "//button[contains(text(),'По')]")#подтвердить
+
+func.do_click(driver, "//button[contains(text(),'Да')]")#да
+
+func.do_click(driver, "(//button[contains(@class,'dropdown-t')])[3]")
+
+func.load_file(driver,"//input[@type='file']","C:/Users/Kovalev_a/Desktop/1.png")#Сюда грузить
+
+time.sleep(500)
+driver.close()
+driver.quit()
+
+
+
+
+
+

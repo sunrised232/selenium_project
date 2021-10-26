@@ -35,3 +35,7 @@ def read_file(path):
         line = next(fin)
         work_with_file = line.strip()
     return work_with_file.split()
+
+def load_file(driver,xpath,path):
+    load = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, xpath)))
+    load.send_keys(path)
